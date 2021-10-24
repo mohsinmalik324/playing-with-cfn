@@ -1,0 +1,28 @@
+Resources:
+  EC2VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+
+  EC2Subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/20
+      VpcId: !Ref EC2VPC
+      AvailabilityZone: us-west-2a
+
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: my ec2 security group
+      VpcId: !Ref EC2VPC
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-013a129d325529d4d
+      KeyName: myec2keypair
+      SecurityGroupIds:
+        - !GetAtt EC2SecurityGroup.GroupId
+      SubnetId: !Ref EC2Subnet
+      AvailabilityZone: us-west-2a
